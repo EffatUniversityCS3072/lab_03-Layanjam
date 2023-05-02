@@ -1,11 +1,12 @@
 ---
 title: "Lab 03"
-author: ""
-date: ""
-editor_options: 
-  chunk_output_type: console
+author: ''
+date: "2.5.2023"
 output:
+  word_document: default
   pdf_document: default
+editor_options:
+  chunk_output_type: console
 ---
 
 # Packages
@@ -27,6 +28,8 @@ fl_votes %>%
 # Exercise 1
 
 ```{r add-winner}
+#mutate add a new column 
+fl_votes <- fl_votes %>%  mutate(winner20 = if_else(rep20 > dem20, 'Donald trump','Joe Biden'))
 
 ```
 
@@ -35,34 +38,51 @@ fl_votes %>%
 
 ```{r fl-plot-1}
 
-
+ggplot(fl_votes) +
+geom_sf(aes(fill = winner20)) +
+  scale_fill_manual (values = c("#DE0100", "#0015BC")) +
+  labs(title="Election winners 2020", fill="winner") +
+  theme_bw()
+                              
 ```
 
 # Exercise #3
 
 ```{r fl-props}
+fl_votes <- fl_votes %>% mutate(prop_rep16 = rep16/(rep16+dem16))
+fl_votes <- fl_votes %>% mutate(prop_rep20 = rep20/(rep20+dem20)) 
 
 ```
 
 # Exercise 4
 
 ```{r fl-plot-2}
+ggplot(fl_votes) +
+geom_sf(aes(fill = prop_rep20 )) +
+scale_fill_gradient(low = "#DE0100", high = "#0015BC") +
+labs(title = "The winner of each county in 2020 election ",fill = "Winner") + theme_bw() 
 
 ```
 
 # Exercise 5
 
 ```{r fl-change}
-
+fl_votes <- fl_votes %>% mutate(diff_rep = prop_rep20 - prop_rep16)
 ```
 
 # Exercise 6
 
 ```{r fl-plot-3}
+ggplot(fl_votes) +
+  geom_sf(aes(fill = diff_rep)) +
+  scale_fill_gradient2(low = "#0015BC", high = "#FF1D8E") +
+  labs(title = "The change in Republican vote share by county",fill = "Winner") + theme_bw() 
+
 
 ```
 
 # Exercise 7
+They prefer Donald Trump more than Joe Byeden. The limitations of these visualizations: it is only for the 2016 and 2020 U.S.
 
 
 
